@@ -18,11 +18,15 @@ const Input = ({ label , value, updateValue}: InputProps) => {
         </>
     )
 }
-export function CreateModal(){
+
+interface ModalProps{
+    closeModal():void 
+}
+export function CreateModal({closeModal}: ModalProps){
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
     const [price, setPrice] = useState(0);
-    const { mutate } = useFoodDataMutate();
+    const { mutate, isSuccess } = useFoodDataMutate();
 
     const submit = () =>{
         const fooData: FoodData = {
@@ -33,26 +37,33 @@ export function CreateModal(){
         mutate(fooData);
     }
 
-    // useEffect(()=>{
-    //     if(!isSuccess) return
-    //     // closeModal();
-    // }, [isSuccess])
+    useEffect(()=>{
+        if(!isSuccess) return
+        closeModal();
+    }, [isSuccess])
     
     return(
         <div className="modal-overlay">
-            <div className="modal-body">
-                <h2>Cadastre um novo item no cardápio</h2>
-                <form className="input-container">
-                    <Input label="title" value={title} updateValue={setTitle}></Input>
-                    <Input label="price" value={price} updateValue={setPrice}></Input>
-                    <Input label="image" value={image} updateValue={setImage}></Input>
-                </form>
-                <button onClick={submit} className="btn-secondary">
-                    postar
-                    {/* {isLoasding? 'postando...':'postar'} */}
-                </button>
+            <div className="modal-container">
+                <div className="close">
+                    <a onClick={()=>closeModal()}>X</a>
+                </div>
+                <div className="modal-body">
+                    <h2>Cadastre um novo item no cardápio</h2>
+                    <form className="input-container">
+                        <Input label="title" value={title} updateValue={setTitle}></Input>
+                        <Input label="price" value={price} updateValue={setPrice}></Input>
+                        <Input label="image" value={image} updateValue={setImage}></Input>
+                    </form>
+                    <button onClick={submit} className="btn-secondary">
+                        postar
+                        {/* {isLoasding? 'postando...':'postar'} */}
+                    </button>
+
+                </div>
 
             </div>
+            
 
         </div>
     )

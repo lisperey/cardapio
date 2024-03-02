@@ -26,7 +26,7 @@ function App() {
           />
          )}
       </div>
-         {isModalOpen && <CreateModal/>}
+         {isModalOpen && <CreateModal closeModal={hanleOpenModal}/>}
          <button onClick={hanleOpenModal}>novo</button>
     </div>
   )
